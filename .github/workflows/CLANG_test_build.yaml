@@ -1,0 +1,77 @@
+# SPDX-FileCopyrightText: Copyright 2022-2025 Arm Limited and/or its
+# affiliates <open-source-office@arm.com>
+# SPDX-License-Identifier: Apache-2.0
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
+name: CLANG Alif build test
+on:
+
+  workflow_dispatch:
+  #pull_request:
+  #  branches: [main]
+  #push:
+  #  branches: [main]
+  #schedule:
+  #  - cron: '00 20 * * 6'
+
+  
+jobs:
+  CI:
+    strategy:  
+      matrix:
+        context: [
+          { tool: CLANG,   dir: ./Alif/AppKit_D3/MLEK_Audio,                   proj: mlek_audio,           target_type: AE722F80F55D5LS-U55-128, build_type: Debug-Live_Stream },
+          { tool: CLANG,   dir: ./Alif/AppKit_D3/MLEK_Audio,                   proj: mlek_audio,           target_type: AE722F80F55D5LS-U55-128, build_type: Release-Live_Stream },
+          { tool: CLANG,   dir: ./Alif/AppKit_D3/MLEK_Video,                   proj: mlek_video,           target_type: AE722F80F55D5LS-U55-256, build_type: Debug-Live_Stream },
+          { tool: CLANG,   dir: ./Alif/AppKit_D3/MLEK_Video,                   proj: mlek_video,           target_type: AE722F80F55D5LS-U55-256, build_type: Release-Live_Stream },
+          { tool: CLANG,   dir: ./Alif/AppKit_D3/MLEK_AV_DualCore,             proj: mlek_dual,            target_type: AE722F80F55D5LS,         build_type: Debug-Live_Stream },
+          { tool: CLANG,   dir: ./Alif/AppKit_D3/MLEK_AV_DualCore,             proj: mlek_dual,            target_type: AE722F80F55D5LS,         build_type: Release-Live_Stream },
+          { tool: CLANG,   dir: ./Alif/AppKit_D3/Tensorflow_LiteRT_HelloWorld, proj: TFLiteRT_HelloWorld,  target_type: AE722F80F55D5LS,         build_type: Debug },
+          { tool: CLANG,   dir: ./Alif/AppKit_D3/Tensorflow_LiteRT_HelloWorld, proj: TFLiteRT_HelloWorld,  target_type: AE722F80F55D5LS,         build_type: Release }
+          ]
+
+      fail-fast: false
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Activate vcpkg
+      uses: ARM-software/cmsis-actions/vcpkg@v1
+      with: 
+        config: "./vcpkg-configuration.json"
+
+    - name: Activate Arm tool license
+      uses: ARM-software/cmsis-actions/armlm@v1
+
+    - name: Cache downloaded packs
+      uses: actions/cache@v4
+      with:
+        key: Alif
+        path: /home/runner/.cache/arm/packs/.Download
+
+    - name: ${{matrix.context.tool}} Build-Test for context ${{matrix.context.proj}}.${{matrix.context.build_type}}+${{matrix.context.target_type}}
+      working-directory: ${{matrix.context.dir}}
+      run: |
+        cbuild ${{matrix.context.proj}}.csolution.yml --context .${{matrix.context.build_type}}+${{matrix.context.target_type}} --toolchain ${{matrix.context.tool}} --packs
+
+    - name: Upload output for context ${{matrix.context.proj}}.${{matrix.context.build_type}}+${{matrix.context.target_type}}
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{matrix.context.tool}}_build_${{matrix.context.proj}}.${{matrix.context.build_type}}+${{matrix.context.target_type}}
+        path: ${{matrix.context.dir}}/out
+

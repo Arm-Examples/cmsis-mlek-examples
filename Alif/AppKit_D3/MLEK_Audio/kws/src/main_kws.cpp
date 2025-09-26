@@ -196,8 +196,7 @@ int app_main (void) {
     const osThreadAttr_t attr = {
         .stack_size = 4096,
     };
-    /* Initialize CMSIS-RTOS2, create application thread and start the kernel */
-    osKernelInitialize();
+    /* Create application thread and start the kernel */
     osThreadNew(app_main_thread, NULL, &attr);
     osKernelStart();
     return 0;

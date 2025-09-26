@@ -19,6 +19,7 @@
 #include "RTE_Components.h"
 #include  CMSIS_device_header
 #include "cmsis_vio.h"
+#include "cmsis_os2.h"
 #ifdef    CMSIS_shield_header
 #include  CMSIS_shield_header
 #endif
@@ -143,6 +144,9 @@ int main (void) {
 
   /* Initialize Virtual I/O */
   vioInit();
+
+  /* Initialize CMSIS-RTOS2 */
+  osKernelInitialize();
 
   /* Initialize Ethos NPU */
   NpuInit();

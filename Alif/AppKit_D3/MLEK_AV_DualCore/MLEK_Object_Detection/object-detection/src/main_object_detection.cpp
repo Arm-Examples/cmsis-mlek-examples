@@ -157,8 +157,7 @@ int app_main (void) {
         .stack_size = 4096U
     };
 
-    /* Initialize CMSIS-RTOS2, create application thread and start the kernel */
-    osKernelInitialize();
+    /* Create application thread and start the kernel */
     osThreadNew(app_main_thread, NULL, &attr);
     osKernelStart();
     return 0;
