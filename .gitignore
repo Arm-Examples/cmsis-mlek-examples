@@ -70,4 +70,5 @@ Alif/AppKit_D3/.DS_Store
 *.cbuild-idx.yml
 *.cbuild-run.yml
 *.cbuild-set.yml
+*.cbuild-pack.yml
 

@@ -8,6 +8,7 @@ default:
         - -Wno-license-management
       C:
         - -std=gnu11
+        - -Wno-nan-infinity-disabled
       CPP:
         - -std=c++17
         - -fno-exceptions
@@ -30,8 +31,8 @@ default:
         - -fomit-frame-pointer
         - -ffunction-sections
         - -fdata-sections
-        - -flax-vector-conversions
         - -gdwarf-4
+        - -flax-vector-conversions
       CPP:
         - -std=c++17
         - -fno-exceptions
@@ -59,10 +60,13 @@ default:
 #       - -ffp-model=full
       C:
         - -std=gnu11
+        - -Wno-nan-infinity-disabled
       Link:
-        # - -lcrt0
+        - -nostartfiles
+        - -lcrt0
         - -Wl,-Map=$elf()$.map
         - -Wl,--gc-sections
+        - -Wl,--entry=Reset_Handler
 
     - for-compiler: IAR
       C-CPP:

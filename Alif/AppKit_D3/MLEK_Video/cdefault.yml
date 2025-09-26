@@ -57,14 +57,16 @@ default:
         - -std=c++17
         - -fno-exceptions
         - -fno-rtti
-        - -ffp-mode=full
+#       - -ffp-model=full
       C:
         - -std=gnu11
         - -Wno-nan-infinity-disabled
       Link:
-        # - -lcrt0
+        - -nostartfiles
+        - -lcrt0
         - -Wl,-Map=$elf()$.map
         - -Wl,--gc-sections
+        - -Wl,--entry=Reset_Handler
 
     - for-compiler: IAR
       C-CPP:
