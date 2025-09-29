@@ -1,6 +1,0 @@
-{
-    "clangd.arguments": [
-        "--compile-commands-dir=c:\\w\\cmsis-mlek-examples\\Alif\\AppKit_D3\\Tensorflow_LiteRT_HelloWorld\\out\\TFLiteRT_HelloWorld\\AE722F80F55D5LS\\Debug"
-    ],
-    "debug.hideSlowPreLaunchWarning": true
-}

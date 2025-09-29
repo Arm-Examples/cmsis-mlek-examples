@@ -1,6 +1,0 @@
-{
-    "debug.hideSlowPreLaunchWarning": true,
-    "clangd.arguments": [
-        "--compile-commands-dir=/Users/mather01/Documents/GitHub/cmsis-mlek-examples/Alif/AppKit_D3/MLEK_Keyword_Spotting_and_Audio_User_Algorithm_Template/out/kws/AE722F80F55D5LS/Debug-Live_Stream"
-    ]
-}
