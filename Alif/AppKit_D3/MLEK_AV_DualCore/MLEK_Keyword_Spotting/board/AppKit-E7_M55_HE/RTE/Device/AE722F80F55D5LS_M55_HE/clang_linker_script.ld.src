@@ -175,7 +175,7 @@ SECTIONS
         KEEP(*(SORT_BY_NAME(.preserve.*)))
         KEEP(*(.preserve))
         PROVIDE(__preserve_end__ = .);
-    } >RAM0 AT>RAM0 :ram
+    } >RAM1 AT>RAM1 :ram
 
     .data :  {
         *(.data .data.*)
@@ -187,7 +187,7 @@ SECTIONS
         PROVIDE( __global_pointer$ = . + 0x800 );
         *(.sdata .sdata.* .sdata2.*)
         *(.gnu.linkonce.s.*)
-    } >RAM0 AT>ROM0 :ram_init
+    } >RAM1 AT>ROM0 :ram_init
     PROVIDE(__data_start = ADDR(.data));
     PROVIDE(__data_source = LOADADDR(.data));
 
@@ -203,7 +203,7 @@ SECTIONS
         *(.tdata .tdata.* .gnu.linkonce.td.*)
         PROVIDE(__data_end = .);
         PROVIDE(__tdata_end = .);
-    } >RAM0 AT>ROM0 :tls :ram_init
+    } >RAM1 AT>ROM0 :tls :ram_init
     PROVIDE( __tls_base = ADDR(.tdata));
     PROVIDE( __tdata_start = ADDR(.tdata));
     PROVIDE( __tdata_source = LOADADDR(.tdata) );
@@ -223,7 +223,7 @@ SECTIONS
         *(.tcommon)
         PROVIDE( __tls_end = . );
         PROVIDE( __tbss_end = . );
-    } >RAM0 AT>RAM0 :tls :ram
+    } >RAM1 AT>RAM1 :tls :ram
     PROVIDE( __bss_start = ADDR(.tbss));
     PROVIDE( __tbss_start = ADDR(.tbss));
     PROVIDE( __tbss_offset = ADDR(.tbss) - ADDR(.tdata) );
@@ -246,7 +246,7 @@ SECTIONS
     .tbss_space (NOLOAD) : {
         . = ADDR(.tbss);
         . = . + SIZEOF(.tbss);
-    } >RAM0 AT>RAM0 :ram
+    } >RAM1 AT>RAM1 :ram
     */
 
     .bss (NOLOAD) : {
@@ -259,7 +259,7 @@ SECTIONS
         /* Align the end of this section, so next can start on aligned address */
         . = ALIGN(8);
         __bss_end = .;
-    } >RAM0 AT>RAM0 :ram
+    } >RAM1 AT>RAM1 :ram
     PROVIDE( __non_tls_bss_start = ADDR(.bss) );
     PROVIDE( __bss_size = __bss_end - __bss_start );
 
@@ -273,7 +273,7 @@ SECTIONS
         /* Align the end of this section, so next (heap) can start on aligned address */
         . = ALIGN(8);
         __noinit_end__ = .;
-    } >RAM0 AT>RAM0 :ram
+    } >RAM1 AT>RAM1 :ram
 
     PROVIDE( __end = . );
     PROVIDE( _end = . );
@@ -290,21 +290,21 @@ SECTIONS
 #endif
     .heap (NOLOAD) : {
         . += __heap_size;
-    } >RAM0 :ram
+    } >RAM1 :ram
 
     /* Define a stack region to make sure it fits in memory */
-    PROVIDE(__stack = ORIGIN(RAM0) + LENGTH(RAM0) - __STACKSEAL_SIZE);
+    PROVIDE(__stack = ORIGIN(RAM1) + LENGTH(RAM1) - __STACKSEAL_SIZE);
     PROVIDE(__stack_limit = __stack - __STACK_SIZE);
     .stack (__stack_limit) (NOLOAD) : {
         . += __STACK_SIZE;
-    } >RAM0 :ram
+    } >RAM1 :ram
 
 #if __STACKSEAL_SIZE > 0
     PROVIDE(__stack_seal = __stack);
     .stackseal (__stack) (NOLOAD) :
     {
         . += __STACKSEAL_SIZE;
-    } >RAM0 :ram
+    } >RAM1 :ram
 #endif
 
     /* Throw away C++ exception handling information */

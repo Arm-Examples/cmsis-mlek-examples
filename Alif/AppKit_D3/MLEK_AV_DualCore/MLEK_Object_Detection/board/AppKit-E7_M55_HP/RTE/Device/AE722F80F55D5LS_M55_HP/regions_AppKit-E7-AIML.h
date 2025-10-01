@@ -15,10 +15,10 @@
 //   <o> Base address <0x0-0xFFFFFFFF:8>
 //   <i> Defines base address of memory region. Default: 0x80000000
 //   <i> Contains Startup and Vector Table
-#define __ROM0_BASE 0x80000000
+#define __ROM0_BASE 0x80200000
 //   <o> Region size [bytes] <0x0-0xFFFFFFFF:8>
 //   <i> Defines size of memory region. Default: 0x00580000
-#define __ROM0_SIZE 0x00580000
+#define __ROM0_SIZE 0x00200000
 // </h>
 
 // <h> __ROM1 (unused)

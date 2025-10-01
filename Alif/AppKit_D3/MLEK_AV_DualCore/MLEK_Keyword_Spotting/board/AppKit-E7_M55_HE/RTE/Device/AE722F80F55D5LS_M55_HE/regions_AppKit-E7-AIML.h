@@ -18,7 +18,7 @@
 #define __ROM0_BASE 0x80000000
 //   <o> Region size [bytes] <0x0-0xFFFFFFFF:8>
 //   <i> Defines size of memory region. Default: 0x00580000
-#define __ROM0_SIZE 0x00580000
+#define __ROM0_SIZE 0x00200000
 // </h>
 
 // <h> __ROM1 (unused)
