@@ -80,7 +80,7 @@ solution:
       target-set:
         - set: Video_Release-Live_Stream
           images:
-            - project-context: object-detection.Release-Live_Stream  
+            - project-context: object-detection.Release-Live_Stream
           debugger:
             name: CMSIS-DAP@pyOCD
             port: 3333
