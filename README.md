@@ -49,7 +49,7 @@ Each example is independently configured for directly running on the [Alif AppKi
 
 ## Continuous Integration (CI)
 
-The repository uses [GitHub Actions](.github/workflows) to test project builds by using the Arm Compiler for Embedded (AC6), GCC, and Arm Compiler armclang (CLANG). It is also builds audio and video examples and test them by using [FVP simulation models](https://arm-software.github.io/AVH/main/simulation/html/index.html) .
+The repository uses [GitHub Actions](.github/workflows) to test project builds by using the Arm Compiler for Embedded (AC6), GCC, and Arm Compiler armclang (CLANG). It also builds audio and video examples and tests them by using [FVP simulation models](https://arm-software.github.io/AVH/main/simulation/html/index.html).
 
 
 | CI Workflow                                                   | Description |
