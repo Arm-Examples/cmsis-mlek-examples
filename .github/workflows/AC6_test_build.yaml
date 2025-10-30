@@ -28,17 +28,18 @@ on:
   
 jobs:
   CI:
-    strategy:  
+    strategy:
+      max-parallel: 1
       matrix:
         context: [
-          { tool: AC6,   dir: ./Alif/AppKit_D3/MLEK_Audio,                   proj: mlek_audio,           target_type: AE722F80F55D5LS-U55-128, build_type: Debug-Live_Stream },
-          { tool: AC6,   dir: ./Alif/AppKit_D3/MLEK_Audio,                   proj: mlek_audio,           target_type: AE722F80F55D5LS-U55-128, build_type: Release-Live_Stream },
-          { tool: AC6,   dir: ./Alif/AppKit_D3/MLEK_Video,                   proj: mlek_video,           target_type: AE722F80F55D5LS-U55-256, build_type: Debug-Live_Stream },
-          { tool: AC6,   dir: ./Alif/AppKit_D3/MLEK_Video,                   proj: mlek_video,           target_type: AE722F80F55D5LS-U55-256, build_type: Release-Live_Stream },
-          { tool: AC6,   dir: ./Alif/AppKit_D3/MLEK_AV_DualCore,             proj: mlek_dual,            target_type: AE722F80F55D5LS,         build_type: Debug-Live_Stream },
-          { tool: AC6,   dir: ./Alif/AppKit_D3/MLEK_AV_DualCore,             proj: mlek_dual,            target_type: AE722F80F55D5LS,         build_type: Release-Live_Stream },
-          { tool: AC6,   dir: ./Alif/AppKit_D3/Tensorflow_LiteRT_HelloWorld, proj: TFLiteRT_HelloWorld,  target_type: AE722F80F55D5LS,         build_type: Debug },
-          { tool: AC6,   dir: ./Alif/AppKit_D3/Tensorflow_LiteRT_HelloWorld, proj: TFLiteRT_HelloWorld,  target_type: AE722F80F55D5LS,         build_type: Release }
+          { tool: AC6,  dir: ./Alif/AppKit_D3/MLEK_Audio,                    proj: mlek_audio,           target_type: AE722F80F55D5LS-U55-128,  build_type: Debug-Live_Stream,    cbld_set: Audio_Debug-Live_Stream},
+          { tool: AC6,  dir: ./Alif/AppKit_D3/MLEK_Audio,                    proj: mlek_audio,           target_type: AE722F80F55D5LS-U55-128,  build_type: Release-Live_Stream,  cbld_set: Audio_Release-Live_Stream},
+          { tool: AC6,  dir: ./Alif/AppKit_D3/MLEK_Video,                    proj: mlek_video,           target_type: AE722F80F55D5LS-U55-256,  build_type: Debug-Live_Stream,    cbld_set: Video_Debug-Live_Stream},
+          { tool: AC6,  dir: ./Alif/AppKit_D3/MLEK_Video,                    proj: mlek_video,           target_type: AE722F80F55D5LS-U55-256,  build_type: Release-Live_Stream,  cbld_set: Video_Release-Live_Stream},
+          { tool: AC6,  dir: ./Alif/AppKit_D3/MLEK_AV_DualCore,              proj: mlek_dual,            target_type: AE722F80F55D5LS,          build_type: Debug-Live_Stream,    cbld_set: DualCore_Debug},
+          { tool: AC6,  dir: ./Alif/AppKit_D3/MLEK_AV_DualCore,              proj: mlek_dual,            target_type: AE722F80F55D5LS,          build_type: Release-Live_Stream,  cbld_set: DualCore_Release},
+          { tool: AC6,  dir: ./Alif/AppKit_D3/Tensorflow_LiteRT_HelloWorld,  proj: TFLiteRT_HelloWorld,  target_type: AE722F80F55D5LS,          build_type: Debug,                cbld_set: TFL_HelloWorld_Debug},
+          { tool: AC6,  dir: ./Alif/AppKit_D3/Tensorflow_LiteRT_HelloWorld,  proj: TFLiteRT_HelloWorld,  target_type: AE722F80F55D5LS,          build_type: Release,              cbld_set: TFL_HelloWorld_Release}
           ]
 
       fail-fast: false
@@ -54,15 +55,15 @@ jobs:
       uses: ARM-software/cmsis-actions/vcpkg@v1
       with: 
         config: "./vcpkg-configuration.json"
+        cache: ""
 
     - name: Activate Arm tool license
       uses: ARM-software/cmsis-actions/armlm@v1
 
-    - name: Cache downloaded packs
-      uses: actions/cache@v4
-      with:
-        key: Alif
-        path: /home/runner/.cache/arm/packs/.Download
+    - name: Run cbuild setup for ${{matrix.context.tool}}_${{matrix.context.proj}}.csolution.yml
+      working-directory: ${{matrix.context.dir}}
+      run: |
+        cbuild setup ${{matrix.context.proj}}.csolution.yml --active ${{matrix.context.target_type}}@${{matrix.context.cbld_set}} --packs
 
     - name: ${{matrix.context.tool}} Build-Test for context ${{matrix.context.proj}}.${{matrix.context.build_type}}+${{matrix.context.target_type}}
       working-directory: ${{matrix.context.dir}}
