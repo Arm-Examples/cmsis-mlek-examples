@@ -65,16 +65,28 @@ solution:
         - OD-Board-Layer: ../board/AppKit-E7_M55_HP/Board_HP.clayer.yml
 
       target-set:
-        - set:
+        - set: DualCore_Release
+          images:
+            - project-context: object-detection.Release-Live_Stream
+            - project-context: kws.Release-Live_Stream
+          debugger:
+            name: CMSIS-DAP@pyOCD
+            port: 3333
+            protocol: swd
+            start-pname: M55_HE
+            clock: 10000000
+        - set: DualCore_Debug
           images:
             - project-context: object-detection.Debug-Live_Stream
             - project-context: kws.Debug-Live_Stream
           debugger:
-            name: JLink Server
+            name: CMSIS-DAP@pyOCD
             port: 3333
             protocol: swd
-            start-pname: M55_HP
-            clock: 5000
+            start-pname: M55_HE
+            clock: 10000000
+
+
 
     # Arm Corstone-300 target
     - type: AVH-SSE-300-U55

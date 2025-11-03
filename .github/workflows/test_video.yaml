@@ -14,7 +14,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-name: mlek audio build and execution test
+name: mlek video build and execution test
 on:
 
   workflow_dispatch:
@@ -31,8 +31,8 @@ jobs:
     strategy:  
       matrix:
         context: [
-          {proj: kws,  build_type: Release-Data_Array,   target_type: AVH-SSE-300-U55,  model: FVP_Corstone_SSE-300_Ethos-U55,  fvp_dir: Corstone-300,  args: '-C mps3_board.v_path=./board/Corstone-300/vsi/python/',  mps: mps3},
-          {proj: kws,  build_type: Debug-Data_Array,   target_type: AVH-SSE-300-U55,  model: FVP_Corstone_SSE-300_Ethos-U55,  fvp_dir: Corstone-300,  args: '-C mps3_board.v_path=./board/Corstone-300/vsi/python/',  mps: mps3}
+          {proj: object-detection,  build_type: Release-Data_Array, target_type: AVH-SSE-300-U55,  model: FVP_Corstone_SSE-300_Ethos-U55,  fvp_dir: Corstone-300,  args: '-C mps3_board.v_path=./board/Corstone-300/vsi/python/',  mps: mps3},
+          {proj: object-detection,  build_type: Debug-Data_Array,   target_type: AVH-SSE-300-U55,  model: FVP_Corstone_SSE-300_Ethos-U55,  fvp_dir: Corstone-300,  args: '-C mps3_board.v_path=./board/Corstone-300/vsi/python/',  mps: mps3}
         ]
 
       fail-fast: false
@@ -83,9 +83,9 @@ jobs:
         path: /home/runner/.cache/arm/packs/.Download
 
     - name: AC6-Build-Test 4 context ${{matrix.context.proj}}.${{matrix.context.build_type}}+${{matrix.context.target_type}}
-      working-directory: ./Alif/AppKit_D3/MLEK_Audio
+      working-directory: ./Alif/AppKit_D3/MLEK_Video
       run: |
-        cbuild mlek_audio.csolution.yml --packs --update-rte \
+        cbuild mlek_video.csolution.yml --packs --update-rte \
         --context ${{matrix.context.proj}}.${{matrix.context.build_type}}+${{matrix.context.target_type}} \
         --toolchain AC6 --rebuild
 
@@ -93,30 +93,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: AC6_build_${{matrix.context.proj}}.${{matrix.context.build_type}}+${{matrix.context.target_type}}
-        path: ./Alif/AppKit_D3/MLEK_Audio/out/${{matrix.context.proj}}/${{matrix.context.target_type}}/${{matrix.context.build_type}}
-
-    - name: AC6-Execution-Test 4 context ${{matrix.context.proj}}.${{matrix.context.build_type}}+${{matrix.context.target_type}}
-      working-directory: ./Alif/AppKit_D3/MLEK_Audio
-      run: |
-        ${{ matrix.context.model }} \
-        -a ./out/${{matrix.context.proj}}/${{matrix.context.target_type}}/${{matrix.context.build_type}}/${{matrix.context.proj}}.axf \
-        -f ./board/${{matrix.context.fvp_dir}}/fvp_config.txt \
-        ${{matrix.context.args}} \
-        -C ${{matrix.context.mps}}_board.telnetterminal0.start_telnet=0 \
-        -C ${{matrix.context.mps}}_board.uart0.out_file=fvp_stdout_${{matrix.context.build_type}}_${{matrix.context.target_type}}_${{matrix.context.model}}.log \
-        --simlimit 30
-
-    - name: Show and check FVP UART output for fvp_stdout_${{matrix.context.build_type}}_${{matrix.context.target_type}}_${{matrix.context.model}}.log
-      working-directory: ./Alif/AppKit_D3/MLEK_Audio
-      run: |
-        echo "Show FVP UART output..."
-        cat fvp_stdout_${{matrix.context.build_type}}_${{matrix.context.target_type}}_${{matrix.context.model}}.log
-        echo "Checking FVP UART output..."
-        test "$(grep "FAIL: " fvp_stdout_${{matrix.context.build_type}}_${{matrix.context.target_type}}_${{matrix.context.model}}.log | wc -l)" -eq 0
-
-    - name: Upload FVP UART output for ${{matrix.context.build_type}}_${{matrix.context.target_type}}_${{matrix.context.model}}.log
-      uses: actions/upload-artifact@v4
-      with:
-        name: fvp_stdout_${{matrix.context.build_type}}_${{matrix.context.target_type}}_${{matrix.context.model}}.log
-        path: ./Alif/AppKit_D3/MLEK_Audio/fvp_stdout_${{matrix.context.build_type}}_${{matrix.context.target_type}}_${{matrix.context.model}}.log
-
+        path: ./Alif/AppKit_D3/MLEK_Video/out/${{matrix.context.proj}}/${{matrix.context.target_type}}/${{matrix.context.build_type}}
