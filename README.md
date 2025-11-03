@@ -1,7 +1,7 @@
 [![License](https://img.shields.io/github/license/Arm-Examples/cmsis-mlek-examples?label)](https://github.com/Arm-Examples/cmsis-mlek-examples/blob/main/LICENSE)
 [![Build and Execution Test](https://img.shields.io/github/actions/workflow/status/Arm-Examples/cmsis-mlek-examples/test_audio.yaml?logo=arm&logoColor=0091bd&label=Audio%20Build%20and%20Run%20Test)](https://github.com/Arm-Examples/cmsis-mlek-examples/tree/main/.github/workflows/test_audio.yaml)
 [![AC6 Alif Build Test](https://img.shields.io/github/actions/workflow/status/Arm-Examples/cmsis-mlek-examples/AC6_test_build.yaml?logo=arm&logoColor=0091bd&label=AC6%20Alif%20Build%20Test)](https://github.com/Arm-Examples/cmsis-mlek-examples/tree/main/.github/workflows/AC6_test_build.yaml)
-[![GCC Alif Build Test](https://img.shields.io/github/actions/workflow/status/Arm-Examples/cmsis-mlek-examples/GCC_test_build.yaml?logo=arm&logoColor=0091bd&label=AC6%20Alif%20Build%20Test)](https://github.com/Arm-Examples/cmsis-mlek-examples/tree/main/.github/workflows/GCC_test_build.yaml)
+[![GCC Alif Build Test](https://img.shields.io/github/actions/workflow/status/Arm-Examples/cmsis-mlek-examples/GCC_test_build.yaml?logo=arm&logoColor=0091bd&label=GCC%20Alif%20Build%20Test)](https://github.com/Arm-Examples/cmsis-mlek-examples/tree/main/.github/workflows/GCC_test_build.yaml)
 
 # CMSIS-MLEK Examples
 
